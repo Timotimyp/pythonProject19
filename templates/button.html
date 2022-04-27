@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Личный кабинет</h1>
+<form action="" method="post">
+  <div class="btn-group" role="group" aria-label="example">
+   <p>{{ form.submit1(type="submit", class="btn btn-dark btn-lg") }}</p>
+   <p>{{ form.submit2(type="submit", class="btn btn-dark btn-lg") }}</p>
+</div>
+    <p>{{ form.submit(type="submit", class="btn btn-dark btn-block") }}</p>
+</form>
+
+{% endblock %}
