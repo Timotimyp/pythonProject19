@@ -36,7 +36,7 @@ def login():
 
     if form.validate_on_submit():
         if check_profils(form.username.data, form.password.data):
-            return redirect('/success', success(login))
+            return redirect(f'/success/{form.username.data}')
         else:
             return render_template('login.html',
                                    message="Неправильный логин или пароль",
@@ -83,12 +83,12 @@ def login():
     #         message = "Неправильный логин или пароль"
 
 
-@app.route('/success', methods=['GET', 'POST'])
+@app.route('/success/<login>', methods=['GET', 'POST'])
 def success(login):
     form = Buttons()
     if form.is_submitted():
         if form.submit.data:
-            return redirect("/bookmarks", bookmarks(login))
+            return redirect(f"/bookmarks/{login}")
         if form.submit1.data:
             print(2)
         if form.submit2.data:
@@ -128,7 +128,7 @@ def check_profils(login, password):
     return False
 
 
-@app.route("/bookmarks", methods=['GET', 'POST'])
+@app.route("/bookmarks/<login>", methods=['GET', 'POST'])
 def bookmarks(login):
     print(return_bookmarks(login))
     return f"{return_bookmarks(login)}"
