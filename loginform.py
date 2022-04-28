@@ -36,7 +36,7 @@ def login():
 
     if form.validate_on_submit():
         if check_profils(form.username.data, form.password.data):
-            return redirect('/success')
+            return redirect('/success', success(login))
         else:
             return render_template('login.html',
                                    message="Неправильный логин или пароль",
@@ -84,11 +84,11 @@ def login():
 
 
 @app.route('/success', methods=['GET', 'POST'])
-def success():
+def success(login):
     form = Buttons()
     if form.is_submitted():
         if form.submit.data:
-            return redirect("/bookmarks")
+            return redirect("/bookmarks", bookmarks(login))
         if form.submit1.data:
             print(2)
         if form.submit2.data:
@@ -123,16 +123,22 @@ def check_profils(login, password):
     db_sess = db_session.create_session()
     if login in [prof.login for prof in db_sess.query(Profile).all()]:
         if check_password_hash(db_sess.query(Profile).filter(Profile.login == login).first().hashed_password, password):
-            ko = db_sess.query(Bookmarks).filter(Bookmarks.chat_id == login).all()
-            print(ko)
             return True
         return False
     return False
 
 
 @app.route("/bookmarks", methods=['GET', 'POST'])
-def bookmarks():
-    return
+def bookmarks(login):
+    print(return_bookmarks(login))
+    return f"{return_bookmarks(login)}"
+
+
+def return_bookmarks(login):
+    db_sess = db_session.create_session()
+    user = db_sess.query(Profile).filter(Profile.login == login).first()
+    chat_id = int(user.chat_id)
+    return [prof.reguest for prof in db_sess.query(Bookmarks).filter(Bookmarks.chat_id == chat_id).all()]
 
 
 
